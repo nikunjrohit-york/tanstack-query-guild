@@ -191,7 +191,7 @@ export default function StateManagement() {
         <h2 className="text-2xl font-bold mb-4">🎯 Key Takeaway</h2>
         <div className="space-y-3 text-lg">
           <p>
-            <strong>Don&apos;t use Redux/Zustand for server state!</strong>
+            <strong>Don&apos;t use Zustand for server state!</strong>
           </p>
           <p>
             These are client-state tools. For server state, use tools specifically

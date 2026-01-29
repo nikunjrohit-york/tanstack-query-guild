@@ -634,6 +634,24 @@
         "avatar": "U"
       },
       "createdAt": "2026-01-28T04:24:23.345Z"
+    },
+    {
+      "id": "f5fa",
+      "text": "hello folks",
+      "user": {
+        "name": "User",
+        "avatar": "U"
+      },
+      "createdAt": "2026-01-29T03:30:23.154Z"
+    },
+    {
+      "id": "a79e",
+      "text": "hello optimistic updates",
+      "user": {
+        "name": "User",
+        "avatar": "U"
+      },
+      "createdAt": "2026-01-29T03:31:51.882Z"
     }
   ],
   "profile": {

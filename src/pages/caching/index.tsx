@@ -97,6 +97,75 @@ function ToggleCacheDemo() {
     </div>
   );
 }
+function GCDemo({ gcTime }: { gcTime: number }) {
+  const [showQuery, setShowQuery] = useState(false);
+
+  return (
+    <div className="border rounded-lg p-4 bg-white flex flex-col h-full">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-bold">
+          gcTime: {gcTime === 0 ? "0s" : gcTime < 1000 ? `${gcTime}ms` : `${gcTime / 1000}s`}
+        </h3>
+        <Button
+          variant={showQuery ? "destructive" : "default"}
+          size="sm"
+          onClick={() => setShowQuery(!showQuery)}
+        >
+          {showQuery ? "Unmount" : "Mount"}
+        </Button>
+      </div>
+
+      <div className="flex-1 min-h-[80px]">
+        {showQuery ? (
+          <GCQueryContent gcTime={gcTime} />
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-100 rounded-lg bg-gray-50/50 p-2 text-center text-xs text-gray-400">
+            <p>Query unmounted</p>
+            <p>(Cache timer {gcTime === 0 ? "executes" : "starts"} now)</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function GCQueryContent({ gcTime }: { gcTime: number }) {
+  const { data, isLoading, isFetching, dataUpdatedAt } = useQuery({
+    queryKey: ["gc-demo", gcTime],
+    queryFn: async () => {
+      await new Promise((r) => setTimeout(r, 1500));
+      return { id: Math.random().toString(36).substr(2, 9), timestamp: Date.now() };
+    },
+    gcTime: gcTime,
+    staleTime: Infinity, // Keep it fresh so we only see gcTime effects
+  });
+
+  if (isLoading) {
+    return (
+      <div className="animate-pulse space-y-2">
+        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div className="h-3 bg-gray-100 rounded w-1/2"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-mono text-purple-600 bg-purple-50 px-2 py-0.5 rounded">
+          {isFetching ? "Refetching..." : "From Cache"}
+        </span>
+      </div>
+      <div className="text-sm">
+        <p className="font-medium text-gray-700">Data ID: {data?.id}</p>
+        <p className="text-xs text-gray-400 mt-1">
+          Fetched: {new Date(dataUpdatedAt).toLocaleTimeString()}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 
 export default function Caching() {
   const queryClient = useQueryClient();
@@ -122,8 +191,8 @@ export default function Caching() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`px-4 py-2 font-medium transition-all duration-200 rounded-t-lg ${activeTab === tab.id
-                ? "bg-blue-50 border-b-2 border-blue-600 text-blue-700 shadow-sm"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+              ? "bg-blue-50 border-b-2 border-blue-600 text-blue-700 shadow-sm"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
           >
             {tab.label}
@@ -277,6 +346,21 @@ export default function Caching() {
               >
                 Refetch All
               </Button>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold mb-4">Compare Different gcTime Values</h2>
+            <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 mb-4 text-sm text-purple-800">
+              <p>
+                <strong>The Experiment:</strong> Mount a query to fetch data, then unmount it and watch the cache.
+                If you remount <em>before</em> <code className="bg-purple-100 px-1 rounded">gcTime</code> expires,
+                data is restored instantly. If you wait longer, it&apos;s gone!
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              <GCDemo gcTime={0} />
+              <GCDemo gcTime={5000} />
+              <GCDemo gcTime={1000 * 60 * 5} />
             </div>
           </div>
 

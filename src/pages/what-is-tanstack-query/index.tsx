@@ -191,36 +191,6 @@ function App() {
         </div>
       </div>
 
-      {/* Meet the Creators */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">👥 Meet the Creators</h2>
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Tanner Linsley */}
-          <div className="flex flex-col items-center text-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-yellow-400 to-orange-500 mb-4 flex items-center justify-center text-3xl shadow-lg">
-              👑
-            </div>
-            <h3 className="text-xl font-bold">Tanner Linsley</h3>
-            <p className="text-sm text-blue-600 font-medium mb-2">Creator</p>
-            <p className="text-gray-600 text-sm">
-              Founder of Nozzle.io and creator of the TanStack ecosystem (Query, Table, Virtual, Router, etc.).
-            </p>
-          </div>
-
-          {/* Dominik Dorfmeister */}
-          <div className="flex flex-col items-center text-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-500 mb-4 flex items-center justify-center text-3xl shadow-lg">
-              👨‍💻
-            </div>
-            <h3 className="text-xl font-bold">Dominik Dorfmeister</h3>
-            <p className="text-sm text-blue-600 font-medium mb-2">Lead Maintainer</p>
-            <p className="text-gray-600 text-sm">
-              Web Engineer at Adverity. He has been maintaining and evolving React Query for years and writes the famous "TkDodo's blog".
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* DevTools Teaser */}
       <div className="border-2 border-dashed border-purple-300 rounded-xl p-6 bg-purple-50">
         <h2 className="text-2xl font-bold mb-4 text-purple-800">🔧 DevTools</h2>

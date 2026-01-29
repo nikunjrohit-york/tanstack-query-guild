@@ -7,15 +7,28 @@ export default function FetchWithReactQuery({
 }: {
   category: string;
 }) {
-  const {
-    data: posts,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["posts", category],
-    queryFn: () => fetchData<Post[]>(`/api/posts?category=${category}`),
-  });
+  // const { data: posts, isLoading, isError, error } = useQuery({
+  //   queryKey: ["posts", category],
+  //   queryFn: () => fetchData<Post[]>(`/api/posts?category=${category}`),
+  // });
+
+  const { data: posts, isLoading, isError, error } = useQuery({
+  queryKey: ["posts", category],
+  queryFn: async () => {
+    const data = await fetchData<Post[]>(`/api/posts?category=${category}`);
+    
+    // Example: Manual error if no data returned
+    if (!data || data.length === 0) {
+      throw new Error("No posts found for this category!");
+    }
+    
+    // Example: Simulated random error for testing
+    if (Math.random() < 0.1) {
+      throw new Error("Random server failure!");
+    }
+    return data;
+  }
+});
 
   return (
     <div className="p-4">
